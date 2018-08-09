@@ -22,6 +22,7 @@ router.get('/details', function(req, res, next) {
       
       var data= response.data[0].results;
       var result= {};
+      result['date'] = (new Date(response.data[0].dateTime)).toISOString();
       var height = data.filter(blog => blog.name === 'HEIGHT' )[0].value;
       result['height'] = convert(height).from('cm').to('ft');
       var weight = data.filter(blog => blog.name === 'WEIGHT' )[0].value;
