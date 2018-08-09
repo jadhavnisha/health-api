@@ -17,12 +17,14 @@ router.get('/reading', function(req, res, next) {
 });
 
 router.get('/details', function(req, res, next) {
-  axios.get(detailsUrl).then((response)=>{
-      console.log(response.data[0].results);
-      
+  axios.get(detailsUrl).then((response)=>{   
       var data= response.data[0].results;
       var result= {};
-      result['date'] = (new Date(response.data[0].dateTime)).toISOString();
+      var date = new Date(response.data[0].dateTime); 
+      var now_utc =  Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+      var d = new Date(now_utc);
+      result['date'] = (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear()
+
       var height = data.filter(blog => blog.name === 'HEIGHT' )[0].value;
       result['height'] = convert(height).from('cm').to('ft');
       var weight = data.filter(blog => blog.name === 'WEIGHT' )[0].value;
